@@ -92,8 +92,12 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, 
     game.showLongText("Little kitty: before I go to the portal, who even are you???", DialogLayout.Bottom)
     game.showLongText("Little kitty sister: you don’t see me? I’m you sister!!!", DialogLayout.Bottom)
     game.showLongText("Little kitty:sis?!? You make this game?!?", DialogLayout.Bottom)
+    game.showLongText("Little kitty sister: ya!!!", DialogLayout.Bottom)
+    game.showLongText("Little kitty sister: let’s go back home and have some cookies!!!", DialogLayout.Bottom)
+    game.showLongText("Little kitty:yay!!!! Cookies!!!!", DialogLayout.Bottom)
 })
 function Start_level () {
+    info.setLife(5)
     if (Current_level == 0) {
         tiles.setCurrentTilemap(tilemap`level1`)
     } else if (Current_level == 1) {
@@ -103,12 +107,6 @@ function Start_level () {
     } else {
         game.over(true, effects.confetti)
     }
-    tiles.placeOnRandomTile(Little_kitty, assets.tile`myTile4`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile4`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
-    }
-    scene.cameraFollowSprite(Little_kitty)
-    info.setLife(5)
     for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
         value.destroy()
     }
@@ -117,6 +115,10 @@ function Start_level () {
     }
     for (let value of sprites.allOfKind(SpriteKind.Flower)) {
         value.destroy()
+    }
+    for (let value of tiles.getTilesByType(assets.tile`myTile4`)) {
+        tiles.placeOnRandomTile(Little_kitty, assets.tile`myTile4`)
+        tiles.setTileAt(value, assets.tile`transparency16`)
     }
     for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
         Coins = sprites.create(img`
@@ -360,39 +362,29 @@ function Start_level () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
             . . . . c c c c c c c . . . . . 
-            . . . c 2 b b b b b b c . . . . 
-            . . c 4 4 2 2 b b b 4 2 c . . . 
-            . . c b 4 4 4 2 b 4 4 2 c . . . 
-            . . c b b b 4 4 4 4 2 b c . . . 
+            . . . c 2 b b b b b 4 c . . . . 
+            . . c b 4 2 b b b 4 4 b c . . . 
+            . . c b b 4 2 b 4 4 2 b c . . . 
             . . c b b b 4 4 4 2 b b c . . . 
-            . . c b 4 4 4 4 4 b b b c . . . 
-            . . c 4 4 2 b b 4 2 b b c . . . 
-            . . c 2 2 b b b 4 4 2 b c . . . 
-            . . . c b b b b b 4 4 c . . . . 
+            . . c b b b 4 4 4 b b b c . . . 
+            . . c b b b b 2 4 b b b c . . . 
+            . . c b b b b b 2 4 b b c . . . 
+            . . c b b b b b b 2 4 b c . . . 
+            . . . c b b b b b b 2 c . . . . 
             . . . . c c c c c c c . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
             `, SpriteKind.Fireball)
         tiles.placeOnTile(Fireball, value)
         tiles.setTileAt(value, assets.tile`transparency16`)
         animation.runMovementAnimation(
         Fireball,
-        "c 0 -100 0 100 0 0",
+        "C 0 -100 0 100 0 0",
         2000,
         true
         )
         Fireball.startEffect(effects.fire)
-    }
-    for (let value of sprites.allOfKind(SpriteKind.Cat)) {
-    	
-    }
-    tiles.placeOnRandomTile(_, assets.tile`myTile9`)
-    for (let value of tiles.getTilesByType(assets.tile`myTile9`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
-    }
-    for (let value of tiles.getTilesByType(assets.tile`myTile10`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
     }
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
@@ -408,7 +400,6 @@ let Flower: Sprite = null
 let Coins: Sprite = null
 let Bee: Sprite = null
 let Current_level = 0
-let _: Sprite = null
 let Little_kitty: Sprite = null
 Little_kitty = sprites.create(img`
     . . . . . . . . . . . . . . . . 
@@ -428,7 +419,7 @@ Little_kitty = sprites.create(img`
     . . . . f . f . . f . f . . . . 
     . . . . f . f . . f . f . . . . 
     `, SpriteKind.Player)
-_ = sprites.create(img`
+let _ = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -571,16 +562,19 @@ scene.setBackgroundImage(img`
     `)
 Little_kitty.setBounceOnWall(false)
 scene.setBackgroundColor(9)
-Start_level()
+tiles.setCurrentTilemap(tilemap`level1`)
+tiles.placeOnRandomTile(Little_kitty, assets.tile`myTile4`)
+scene.cameraFollowSprite(Little_kitty)
+for (let value of tiles.getTilesByType(assets.tile`myTile9`)) {
+    tiles.placeOnRandomTile(_, assets.tile`myTile9`)
+    tiles.setTileAt(value, assets.tile`transparency16`)
+}
 game.showLongText("???:Welcome to the 2 cat 2 curious!", DialogLayout.Bottom)
-game.showLongText("???:Do you want some basic rules???", DialogLayout.Bottom)
-game.showLongText("???:If you want some basic rules, I will explain the basic rules!!!", DialogLayout.Bottom)
-game.showLongText("???: if you overlaps the fireball you lose 1 heart.", DialogLayout.Bottom)
-game.showLongText("???: if you overlaps the flower, the bee will erase 1 heart.", DialogLayout.Bottom)
-game.showLongText("???:but, if you overlaps the bee, you got 1 score!!!", DialogLayout.Bottom)
-game.showLongText("???: if you overlaps the coin, then you got 1 score.", DialogLayout.Bottom)
-game.showLongText("???: good luck!!!", DialogLayout.Bottom)
-game.showLongText("Little kitty: thank!!", DialogLayout.Bottom)
+game.showLongText("???:let’s start the game!", DialogLayout.Bottom)
+game.showLongText("Little kitty: wait… who even are you?", DialogLayout.Bottom)
+game.showLongText("???:i tell you at the end! Okay?", DialogLayout.Bottom)
+game.showLongText("Little kitty: okay!", DialogLayout.Bottom)
+Start_level()
 _.destroy()
 controller.moveSprite(Little_kitty)
 game.onUpdate(function () {
